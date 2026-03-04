@@ -977,12 +977,9 @@ ul {
 }
 
 .about-lead {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    color: var(--cosmic);
-    line-height: 1.6;
-    margin-bottom: 20px;
-    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.8;
 }
 
 .about-content>p {
@@ -1086,6 +1083,43 @@ ul {
 .floating-text {
     font-size: 0.82rem;
     color: var(--text-muted);
+}
+
+/* ════════════════════════════════════════
+   GALLERY
+   ════════════════════════════════════════ */
+.gallery {
+    padding: 100px 0;
+    background: linear-gradient(180deg, var(--white) 0%, var(--cream) 100%);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.gallery-item {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
 }
 
 /* ════════════════════════════════════════
@@ -1535,6 +1569,10 @@ ul {
     .about-values {
         grid-template-columns: 1fr;
         gap: 12px;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
     }
 
     .testimonial-grid {
