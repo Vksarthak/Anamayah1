@@ -2,7 +2,7 @@
    ANAMAYAH — Interactive Functionality
    ======================================== */
 
-   document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
     // ── Navbar Scroll Effect ──
     const navbar = document.getElementById('navbar');
@@ -152,7 +152,7 @@
                     throw new Error('Form submission failed');
                 }
             } catch (error) {
-                showFormStatus('error', '⚠️ Something went wrong. Please try again or email us directly at hello@anamayah.in.');
+                showFormStatus('error', '⚠️ Something went wrong. Please try again or email us directly at anamayah99@gmail.com.');
             } finally {
                 btnText.style.display = 'inline';
                 btnLoader.style.display = 'none';
