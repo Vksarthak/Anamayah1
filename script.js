@@ -111,55 +111,71 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ── Contact Form Handling ──
-    const contactForm = document.getElementById('contactForm');
-    const formStatus = document.getElementById('formStatus');
-    const submitBtn = document.getElementById('submitBtn');
+   // ── Contact Form Handling (WhatsApp Integration) ──
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+const submitBtn = document.getElementById('submitBtn');
 
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-            const btnText = submitBtn.querySelector('.btn-text');
-            const btnLoader = submitBtn.querySelector('.btn-loader');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoader = submitBtn.querySelector('.btn-loader');
 
-            // Show loading state
-            btnText.style.display = 'none';
-            btnLoader.style.display = 'inline';
-            submitBtn.disabled = true;
+        // Get form values
+        const name = document.getElementById('contactName').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+        const service = document.getElementById('contactService').value.trim();
+        const message = document.getElementById('contactMessage').value.trim();
 
-            const formData = new FormData(contactForm);
+        // Validation
+        if (!name || !email || !message) {
+            showFormStatus('error', '⚠️ Please fill in all required fields.');
+            return;
+        }
 
-            // Add Formspree-specific fields
-            formData.append('_subject', 'New Inquiry from Anamayah Website — ' + (formData.get('service') || 'General'));
-            formData.append('_replyto', formData.get('email'));
+        // Show loading state
+        btnText.style.display = 'none';
+        btnLoader.style.display = 'inline';
+        submitBtn.disabled = true;
 
-            try {
-                const action = contactForm.getAttribute('action');
-                const response = await fetch(action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
-                });
+        // Your WhatsApp number (country code + number, no + or spaces)
+        const phoneNumber = '919811111156';
 
-                if (response.ok) {
-                    showFormStatus('success', '✨ Thank you! Your message has been sent successfully. We\'ll get back to you soon.');
-                    contactForm.reset();
-                } else {
-                    const result = await response.json();
-                    if (result.errors) {
-                        throw new Error(result.errors.map(e => e.message).join(', '));
-                    }
-                    throw new Error('Form submission failed');
-                }
-            } catch (error) {
-                showFormStatus('error', '⚠️ Something went wrong. Please try again or email us directly at anamayah99@gmail.com.');
-            } finally {
-                btnText.style.display = 'inline';
-                btnLoader.style.display = 'none';
-                submitBtn.disabled = false;
-            }
-        });
-    }
+        // Create WhatsApp message
+        const whatsappMessage = `🌿 New Inquiry from Anamayah Website
+
+Name: ${name}
+Email: ${email}
+Service of Interest: ${service || 'Not specified'}
+
+Message:
+${message}`;
+
+        // Encode message
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+
+        // WhatsApp URL
+        const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+        // Open WhatsApp in a new tab
+        window.open(whatsappURL, '_blank');
+
+        // Show success message
+        showFormStatus('success', '✨ Opening WhatsApp... Please click Send in WhatsApp to complete your inquiry.');
+
+        // Reset form
+        contactForm.reset();
+
+        // Restore button
+        setTimeout(() => {
+            btnText.style.display = 'inline';
+            btnLoader.style.display = 'none';
+            submitBtn.disabled = false;
+        }, 1000);
+    });
+}
 
     function showFormStatus(type, message) {
         formStatus.className = 'form-status ' + type;
